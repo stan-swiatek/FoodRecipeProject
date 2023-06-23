@@ -3,6 +3,7 @@ package com.foodRecipe.FoodRecipeProject.service;
 
 import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithGivenIngredientOrTitleException;
 import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithinTimeRangeException;
+import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipiesFoundWithGivenTitleAndPrepTimeException;
 import com.foodRecipe.FoodRecipeProject.model.Ingredient;
 import com.foodRecipe.FoodRecipeProject.model.Recipe;
 import com.foodRecipe.FoodRecipeProject.repository.RecipeRepository;
@@ -73,24 +74,28 @@ public class RecipeService implements IRecipeService{
     }
 
 
-
     @Override
-    public List<Recipe> searchByTitleOrIngredients(String query) throws NoRecipesFoundWithGivenIngredientOrTitleException{
-        List<Recipe> recipeList = recipeRepository.findByTitleContainingIgnoreCaseOrIngredientsNameContainingIgnoreCase(query, query);
+    public List<Recipe> findByTitleOrIngredientAndPrepTime(String query, Integer minTime, Integer maxTime) throws NoRecipesFoundWithinTimeRangeException, NoRecipesFoundWithGivenIngredientOrTitleException, NoRecipiesFoundWithGivenTitleAndPrepTimeException {
+
+        List<Recipe> recipeList = recipeRepository.findByTitleAndPreparationTime((query != null ? query.toUpperCase() : ""), (minTime == null ? 0 : minTime), (maxTime == null ? Integer.MAX_VALUE : maxTime));
+
+
         if(recipeList.isEmpty()){
-            throw new NoRecipesFoundWithGivenIngredientOrTitleException("No recipes found with given recipe title or ingredient");
+            if((minTime != null || maxTime != null) && query != null){
+                throw new NoRecipiesFoundWithGivenTitleAndPrepTimeException("No recipes found with given recipe title, ingredient and within given preparation time");
+            }
+            if(minTime != null || maxTime != null) {
+                throw new NoRecipesFoundWithinTimeRangeException("No recipes found within given time range");
+            }
+            if(query != null){
+                throw new NoRecipesFoundWithGivenIngredientOrTitleException("No recipes found with given recipe title or ingredient");
+            }
         }
+
         return recipeList;
     }
 
-    @Override
-    public List<Recipe> findByPreparationTimeRange(Integer minTime, Integer maxTime) throws NoRecipesFoundWithinTimeRangeException {
-        List<Recipe> recipeList =  recipeRepository.findByPreparationTimeBetween(minTime, maxTime);
-        if(recipeList.isEmpty()){
-            throw new NoRecipesFoundWithinTimeRangeException("No recipes found within given time range");
-        }
-        return recipeList;
-    }
+
 
 
 }

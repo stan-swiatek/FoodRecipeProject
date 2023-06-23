@@ -15,8 +15,17 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.ingredients WHERE r.id = :id")
     Recipe findByIdWithIngredients(@Param("id") Long id);
+//
+//    List<Recipe> findByTitleContainingIgnoreCaseOrIngredientsNameContainingIgnoreCase(String query, String query1);
+//
+//    List<Recipe> findByPreparationTimeBetween(Integer minTime, Integer maxTime);
+//
 
-    List<Recipe> findByTitleContainingIgnoreCaseOrIngredientsNameContainingIgnoreCase(String query, String query1);
+    @Query("SELECT DISTINCT r FROM Recipe r JOIN r.ingredients i " +
+            "WHERE (UPPER(r.title) LIKE %:query% OR UPPER(i.name) LIKE %:query%) " +
+            "AND r.preparationTime BETWEEN :minTime AND :maxTime")
+    List<Recipe> findByTitleAndPreparationTime(@Param("query") String query,
+                                               @Param("minTime") int minTime,
+                                               @Param("maxTime") int maxTime);
 
-    List<Recipe> findByPreparationTimeBetween(Integer minTime, Integer maxTime);
 }

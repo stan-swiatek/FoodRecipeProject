@@ -1,6 +1,7 @@
 package com.foodRecipe.FoodRecipeProject.controller;
 import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithGivenIngredientOrTitleException;
 import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithinTimeRangeException;
+import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipiesFoundWithGivenTitleAndPrepTimeException;
 import com.foodRecipe.FoodRecipeProject.model.Recipe;
 import com.foodRecipe.FoodRecipeProject.service.IIngredientService;
 import com.foodRecipe.FoodRecipeProject.service.IRecipeService;
@@ -52,17 +53,20 @@ public class RecipeController {
     public List<Recipe> searchRecipes(@RequestParam(value = "query", required = false) String query,
                                       @RequestParam(value = "minTime", required = false) Integer minTime,
                                       @RequestParam(value = "maxTime", required = false) Integer maxTime
-                                ) throws NoRecipesFoundWithinTimeRangeException, NoRecipesFoundWithGivenIngredientOrTitleException {
-        List<Recipe> searchResults = new ArrayList<>();
+                                ) throws NoRecipesFoundWithinTimeRangeException, NoRecipesFoundWithGivenIngredientOrTitleException, NoRecipiesFoundWithGivenTitleAndPrepTimeException {
 
-        if (query != null && !query.isEmpty()) {
-            searchResults = recipeService.searchByTitleOrIngredients(query);
-
-        } else if (minTime != null  || maxTime != null) {
-            searchResults = recipeService.findByPreparationTimeRange(minTime, maxTime);
-        }
-        return searchResults;
+        return recipeService.findByTitleOrIngredientAndPrepTime(query, minTime, maxTime);
     }
+
+
+
+
+
+
+
+
+
+
 
 }
 

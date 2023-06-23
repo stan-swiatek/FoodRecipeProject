@@ -20,8 +20,18 @@
   <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post">
     <button type="submit">Delete Recipe</button>
   </form>
+<div>
+  <a th:href="@{/recipes/{id}/edit(id=${recipe.id})}">Edit</a>
 
-  <a href="/recipes">Back to Main Page</a>
+</div>
+
+  <div>
+
+    <a href="/recipes">Back to Main Page</a>
+  </div>
+
+
+
 
 </div>
 </body>

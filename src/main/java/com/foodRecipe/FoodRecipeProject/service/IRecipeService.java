@@ -1,7 +1,5 @@
 package com.foodRecipe.FoodRecipeProject.service;
 
-import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithGivenIngredientOrTitleException;
-import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithinTimeRangeException;
 import com.foodRecipe.FoodRecipeProject.model.Recipe;
 
 import java.util.List;
@@ -22,7 +20,11 @@ public interface IRecipeService {
     Recipe findByIdWithIngredients(Long id);
 
 
-    List<Recipe> searchByTitleOrIngredients(String query) throws NoRecipesFoundWithGivenIngredientOrTitleException;
+//    List<Recipe> searchByTitleOrIngredients(String query) throws NoRecipesFoundWithGivenIngredientOrTitleException;
+//
+//    List<Recipe> findByPreparationTimeRange(Integer minTime, Integer maxTime) throws NoRecipesFoundWithinTimeRangeException;
 
-    List<Recipe> findByPreparationTimeRange(Integer minTime, Integer maxTime) throws NoRecipesFoundWithinTimeRangeException;
+
+    List<Recipe> findByTitleOrIngredientAndPrepTime(String query, Integer minTime, Integer maxTime);
+
 }

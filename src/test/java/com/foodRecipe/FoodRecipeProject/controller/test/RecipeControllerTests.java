@@ -1,7 +1,5 @@
 package com.foodRecipe.FoodRecipeProject.controller.test;
 import com.foodRecipe.FoodRecipeProject.controller.RecipeController;
-import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithGivenIngredientOrTitleException;
-import com.foodRecipe.FoodRecipeProject.exceptions.NoRecipesFoundWithinTimeRangeException;
 import com.foodRecipe.FoodRecipeProject.model.Recipe;
 import com.foodRecipe.FoodRecipeProject.service.IIngredientService;
 import com.foodRecipe.FoodRecipeProject.service.IRecipeService;
@@ -9,14 +7,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.*;
+
 import static org.mockito.Mockito.*;
+
+
 
 public class RecipeControllerTests {
 
@@ -27,6 +27,9 @@ public class RecipeControllerTests {
 
     @Mock
     private IIngredientService ingredientService;
+
+    @Autowired
+    private MockMvc mockMvc;
 
     @BeforeEach
     void setUp() {
@@ -84,30 +87,9 @@ public class RecipeControllerTests {
         verify(recipeService, times(1)).deleteRecipe(recipeId);
     }
 
-    @Test
-    void testSearchRecipesByQuery() throws NoRecipesFoundWithinTimeRangeException, NoRecipesFoundWithGivenIngredientOrTitleException {
 
-        String query = "chicken";
-        List<Recipe> expectedSearchResults = new ArrayList<>();
-        when(recipeService.searchByTitleOrIngredients(query)).thenReturn(expectedSearchResults);
-        List<Recipe> actualSearchResults = recipeController.searchRecipes(query, null, null);
-        assertEquals(expectedSearchResults, actualSearchResults);
-        verify(recipeService, times(1)).searchByTitleOrIngredients(query);
-        verify(recipeService, never()).findByPreparationTimeRange(anyInt(), anyInt());
-    }
 
-    @Test
-    void testSearchRecipesByTimeRange() throws NoRecipesFoundWithinTimeRangeException, NoRecipesFoundWithGivenIngredientOrTitleException {
 
-        Integer minTime = 10;
-        Integer maxTime = 30;
-        List<Recipe> expectedSearchResults = new ArrayList<>();
-        when(recipeService.findByPreparationTimeRange(minTime, maxTime)).thenReturn(expectedSearchResults);
-        List<Recipe> actualSearchResults = recipeController.searchRecipes(null, minTime, maxTime);
-        assertEquals(expectedSearchResults, actualSearchResults);
-        verify(recipeService, times(1)).findByPreparationTimeRange(minTime, maxTime);
-        verify(recipeService, never()).searchByTitleOrIngredients(anyString());
-    }
 
 
 

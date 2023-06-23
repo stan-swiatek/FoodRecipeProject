@@ -30,6 +30,13 @@ public class ApiExceptionHandler {
     }
 
 
+    @ExceptionHandler(NoRecipiesFoundWithGivenTitleAndPrepTimeException.class)
+    public ResponseEntity<ApiError>  handleNoRecipiesFoundWithGivenTitleAndPrepTimeException(NoRecipiesFoundWithGivenTitleAndPrepTimeException ex) {
+        ApiError apiError = new ApiError(HttpStatus.NOT_FOUND, "No recipes found with given recipe title, ingredient and within given preparation time");
+        return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+
 
     @ExceptionHandler(HttpClientErrorException.class)
     public String handleHttpClientErrorException(HttpClientErrorException ex, Model model) {
