@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <title>Recipes</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css"/>
+</head>
+<body>
+<h1><a th:href="@{/recipes}">Recipes</a></h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Preparation Time</th>
+    <th>Actions</th> <!-- New column for actions -->
+  </tr>
+  </thead>
+
+  <a th:href="@{/recipes/create}">Create New Recipe</a>
+
+  <tbody>
+  <tr th:each="recipe : ${recipes}">
+    <td th:text="${recipe.title}"></td>
+    <td th:text="${recipe.description}"></td>
+    <td th:text="${recipe.preparationTime}"></td>
+    <td>
+      <a th:href="@{/recipes/{id}(id=${recipe.id})}">View Details</a>
+      <a th:href="@{/recipes/{id}/edit(id=${recipe.id})}">Edit</a>
+    </td>
+  </tr>
+
+
+<div>
+  <form method="get" action="/recipes/search">
+    <input type="text" name="query" placeholder="Search by title or ingredient" />
+    <input type="number" name="minTime" placeholder="Min Prep Time (minutes)" />
+    <input type="number" name="maxTime" placeholder="Max Prep Time (minutes)" />
+    <button type="submit">Search</button>
+  </form>
+</div>
+
+
+  <div th:if="${message}">
+    <p th:text="${message}"></p>
+  </div>
+
+
+
+
+
+
+
+  </tbody>
+</table>
+
+</body>
+</html>

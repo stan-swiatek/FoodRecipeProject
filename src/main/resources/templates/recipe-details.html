@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Recipe Details</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css"/>
+</head>
+<body>
+<h1>Recipe Details</h1>
+<div>
+  <h2>Title: <span th:text="${recipe.title}"></span></h2>
+  <p>Description: <span th:text="${recipe.description}"></span></p>
+  <p>Preparation Time: <span th:text="${recipe.preparationTime}"></span></p>
+  <p>Instructions: <span th:text="${recipe.instructions}"></span></p>
+  <h3>Ingredients:</h3>
+  <ul>
+    <th:block th:each="ingredient : ${recipe.ingredients}">
+      <li th:text="${ingredient.name}"></li>
+    </th:block>
+  </ul>
+  <form th:action="@{/recipes/delete/{id}(id=${recipe.id})}" method="post">
+    <button type="submit">Delete Recipe</button>
+  </form>
+
+  <a href="/recipes">Back to Main Page</a>
+
+</div>
+</body>
+</html>

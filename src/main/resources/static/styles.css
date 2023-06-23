@@ -1,0 +1,42 @@
+body {
+  background-color: white;
+  color: black;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  color: green;
+}
+
+a {
+  color: green;
+  text-decoration: none;
+}
+
+button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: darkgreen;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 5px;
+}
+
+
+textarea[name="instructions"] {
+  height: 200px;
+  width: 65%;
+  resize: vertical;
+}

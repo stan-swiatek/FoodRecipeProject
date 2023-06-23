@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Recipe</title>
+  <link rel="stylesheet" type="text/css" href="/styles.css"/>
+</head>
+<body>
+<h1>Edit Recipe</h1>
+<form method="post" th:action="@{'/recipes/' + ${recipe.id} + '/edit'}" th:object="${recipe}" onsubmit="return validateForm()">
+  <input type="hidden" th:field="*{id}" />
+  <div>
+    <label>Title:</label>
+    <input type="text" th:field="*{title}" required />
+  </div>
+  <div>
+    <label>Description:</label>
+    <textarea th:field="*{description}" required></textarea>
+  </div>
+  <div>
+    <label>Preparation Time:</label>
+    <input type="number" th:field="*{preparationTime}" required />
+  </div>
+  <div>
+    <label>Instructions:</label>
+    <textarea th:field="*{instructions}" required></textarea>
+  </div>
+  <div>
+    <h3>Ingredients:</h3>
+
+    <ul id="ingredientList">
+      <li th:each="ingredient, iter : ${recipe.ingredients}">
+        <input type="text" th:field="*{ingredients[__${iter.index}__].name}" required />
+        <button type="submit" name="removeIngredient" th:value="${iter.index}">Remove</button>
+      </li>
+    </ul>
+
+    <div>
+      <input type="text" id="newIngredient" name="newIngredient" placeholder="Enter ingredient name" />
+      <button type="submit" name="addIngredient" value="addIngredient">Add Ingredient</button>
+    </div>
+
+    <div>
+      <input type="submit" name="updateRecipe" value="Update Recipe" />
+    </div>
+
+    <div>
+      <a href="/recipes">Back to Main Page</a>
+    </div>
+</form>
+
+<script>
+  function validateForm() {
+    var inputs = document.getElementsByTagName("input");
+    for (var i = 0; i < inputs.length; i++) {
+      if (inputs[i].hasAttribute("required") && inputs[i].value.trim() === "") {
+        alert("Please fill in all the required fields.");
+        return false;
+      }
+    }
+    return true;
+  }
+</script>
+</body>
+</html>
